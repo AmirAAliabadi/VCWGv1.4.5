@@ -1,0 +1,242 @@
+# =================================================
+# Sample VCWG simulation initialization parameters
+# Mohsen Moradi and Amir A. Aliabadi
+# =================================================
+
+# =================================================
+# Urban Configuration
+# =================================================
+nz,18,                 # number of points (nz*dz = 3*bldHeight)
+nz_u,6,                # number of canopy levels in the vertical (nz_u*dz = bldHeight)
+dz,1,                  # vertical resolution [m]
+wx,23,                 # distance between buildings at street level in the x direction [m]; must be equal to wy
+wy,23,                 # distance between buildings at street level in the y direction [m]; must be equal to wx
+Cbw,0.42,              # fraction of building dimension and buildings distance (bx/wx or by/wy)
+theta_can,45,          # Canyon direction from true north clockwise positive [deg] (from -90 to 90 degrees)
+bldHeight,6,           # average building height [m]
+
+# =================================================
+# Column Model
+# =================================================
+Ri_b_cr,0.25,           # Critical bulk Richardson number in the urban area used to determine thermal stability
+Ck_stable,0.4,          # Constant used to determine turbulent diffusion coefficient under stable condition
+Ck_unstable,0.4,        # Constant used to determine turbulent diffusion coefficient under unstable condition
+z0_roof,0.02,           # Roof roughness [m]
+z0_road,0.02,           # Road roughness [m]
+cdmin,0.01,             # Minimum diffusion coefficient
+C_dpdx,1,               # Pressure gradient coefficient
+prandtl,0.8,            # Turbulent Prandtl number
+schmidt,1,              # Turbulent Schmidt number
+HVAC_atm_frac,1,        # Fraction of sensible waste heat from building released into the atmosphere
+HVAC_street_frac,0,     # Fraction of Sensible waste heat from building released into the atmosphere at street level
+
+# =================================================
+# Building Energy Model
+# =================================================
+# HVAC system and internal loads
+glzR,0.1,       # Glazing Ratio (0 - 1)
+autosize,0,     # autosize HVAC (1 for yes; 0 for no)
+sensOcc,100,    # Sensible heat per occupant (W)
+LatFOcc,0.3,    # Latent heat fraction from occupant (normally 0.3)
+RadFOcc,0.2,    # Radiant heat fraction from occupant (normally 0.2)
+RadFEquip,0.5,  # Radiant heat fraction from equipment (normally 0.5)
+RadFLight,0.7,  # Radiant heat fraction from light (normally 0.7)
+hvac,0,         # HVAC TYPE; 0 = Fully Conditioned (21C-24C); 1 = Mixed Mode Natural Ventilation (19C-29C + windows open >22C); 2 = Unconditioned (windows open >22C)
+
+# Climate Zone (Eg. City)   Zone number
+# 1A(Miami)                     1
+# 2A(Houston)                   2
+# 2B(Phoenix)                   3
+# 3A(Atlanta)                   4
+# 3B-CA(Los Angeles)            5
+# 3B(Las Vegas)                 6
+# 3C(San Francisco)             7
+# 4A(Baltimore)                 8
+# 4B(Albuquerque)               9
+# 4C(Seattle)                   10
+# 5A(Chicago)                   11
+# 5B(Boulder)                   12
+# 6A(Minneapolis)               13
+# 6B(Helena)                    14
+# 7(Duluth)                     15
+# 8(Fairbanks)                  16
+# 5A(Guelph)                    17
+
+zone,17,
+
+# Fraction of building stock for each DOE Building type (pre-80's build, 80's-present build, new)
+# Note that sum(bld) must be equal to 1
+bld,
+0,0,0,    # FullServiceRestaurant
+0,0,0,    # Hospital
+0,0,0,    # LargeHotel
+0,0,0,    # LargeOffice
+0,0,0,    # MediumOffice
+0,1,0,    # MidRiseApartment
+0,0,0,    # OutPatient
+0,0,0,    # PrimarySchool
+0,0,0,    # QuickServiceRestaurant
+0,0,0,    # SecondarySchool
+0,0,0,    # SmallHotel
+0,0,0,    # SmallOffice
+0,0,0,    # Stand-aloneRetail
+0,0,0,    # StripMall
+0,0,0,    # SuperMarket
+0,0,0,    # Warehouse
+
+# =================================================
+# Advanced Energy Parameters,
+# =================================================
+Adv_ene_heat_mode,1,    # Heating mode (1), cooling mode (0), no renewable energy (2)
+beta_st,43.67,          # Solar thermal (ST) tilt angle [deg]
+A_st,0.416,             # Area of ST per building footprint area [m^2 m^-2]
+U_st,3,                 # Loss coefficient of ST [W m^-2 K^-1]
+FR_st,0.9,              # Heat removal factor of ST
+tau_alpha_e_st,0.7,     # Effective transmittance-apsorptance of ST
+eta_he_st,0.8,          # Heat exchange efficiency of ST (fluid to air)
+V_bites,0.188,          # Volume of BITES [m^3 m^-2]
+c_bites,5244160,        # Volumetric heat capacity of BITES [J m^-3 K^-1]
+m_dot_st_f, 0.002,      # Mass flow rate of working fluid in ST [kg s^-1 m^-2]
+c_st_f,4200,            # Heat capacity of working fluid in ST [J kg^-1 K^-1]
+m_dot_he_st,0.008,      # Mass flow rate of air in ST heat exchanger [kg s^-1 m^-2]
+beta_pv,43.67,          # PV tilt angle [deg]
+A_pv,0.700,             # Area of PV per building footprint area [m^2 m^-2]
+eta_pv,0.17,            # Electrical efficiency of PV
+COP_hp_min,1.5,         # Minimum COP of auxiliary HP at T_hp_min
+COP_hp_max,4,           # Maximum COP of auxiliary HP at T_hp_max
+T_hp_min,253.15,        # Minimum temperature for auxiliary HP [K]
+T_hp_max,308.15,        # Maximum temperature for auxiliary HP [K]
+A_wt,0.05,              # Swept area of wind turbine [m^2 m^-2]
+eta_wt,0.4,             # efficiency (<Betz limit) of wind turbine
+S_wt_min,2,             # Minimum wind speed for turbine to work [m s^-1]
+S_wt_max,15,            # Maximum wind speed for turbine to work [m s^-1]
+V_pcm,0.035,            # Volume of PCM [m^3 m^-2] for no PCM use a small number NOT zero
+l_pcm,201600000,        # Volumetric latent heat of PCM [J m^-3]
+T_melt,299,             # Melting temperature of PCM [K] (Inorganic Salt Hydrate)
+
+# =================================================
+# Urban Canopy Model,
+# =================================================
+h_mix,1,          # fraction of building HVAC waste heat set to the street canyon [as opposed to the roof]
+charLength,8,     # dimension of a square that encompasses the whole neighborhood [aka. characteristic length] (m)
+dRoad,0.5,        # road pavement thickness [m]
+kRoad,1,          # road pavement conductivity [W m^-2 K^-1]
+cRoad,1600000,    # road volumetric heat capacity [J m^-3 K^-1]
+sensAnth,0,       # non-building sensible heat at street level [aka. heat from cars, pedestrians, street cooking, etc. ] [W m^-2]
+latAnth,0,        # non-building latent heat [W m^-2] (currently not used)
+# Traffic schedule [1 to 24 hour], 1st: Weekday, 2nd: Saturday, 3rd is Sunday
+SchTraffic,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+
+# =================================================
+# Urban View Factors,
+# =================================================
+# To obtain a new set of view factors, the program Run_RayTracing.py should be run and new view factors should be copied and pasted here
+# nT = no trees, T = trees, g = ground, s = sky, w = wall, t = trees
+# View factor ray tracing
+F_gs_nT,0.772597
+F_gw_nT,0.113702
+F_ww_nT,0.128288
+F_wg_nT,0.435856
+F_ws_nT,0.435856
+F_sg_nT,0.772597
+F_sw_nT,0.113702
+F_gs_T,0.595582
+F_gt_T,0.259194
+F_gw_T,0.072612
+F_ww_T,-0.014115
+F_wt_T,0.496806
+F_wg_T,0.278346
+F_ws_T,0.238964
+F_sg_T,0.595582
+F_sw_T,0.062338
+F_st_T,0.279741
+F_tg_T,0.316265
+F_tw_T,0.158138
+F_ts_T,0.341337
+F_tt_T,0.026121
+
+# =================================================
+# Rural Model
+# =================================================
+L_Pos_min,0,            # Minimum positive Obukhov length [m] used by the rural model [m]
+L_Pos_max,2000000,      # Maximum positive Obukhov length [m] used by the rural model [m]
+L_Neg_max,0,            # Maximum negative Obukhov length [m] used by the rural model [m]
+L_Neg_min,-1000000,     # Minimum negative Obukhov length [m] used by the rural model [m]
+ZL_Pos_cutoff,0.01,     # Cutoff z/L for neutral to stable condition used by the rural model
+ZL_Neg_cutoff,-0.01,    # Cufoff z/L for neutral to unstable condition used by the rural model
+u_star_min_MOST,0.35,   # Minimum friction velocity used by the rural model typically in the order of 0.1 * WindMin_MOST [m s^-1]
+z0overh_MOST,0.1,       # Aerodynamic roughness length over obstacle height for MOST
+zToverz0_MOST,0.1,      # Thermodynamic roughness length over Aerodynamic roughness length for MOST
+dispoverh_MOST,0.5,     # Displacement height over obstacle height for MOST
+WindMin_MOST,0.2,       # Minimum wind for MOST [m s^-1]
+h_obs,2,                # rural average obstacle height [m]
+h_temp,2,               # temperature height [m]
+h_wind,10,              # wind height [m]
+BowenRatio_rural,1.5,   # Bowen ratio in the rural area
+MinWind_rural,0.5,      # minimum wind for surface heat flux calculation for rural surface energy balance [m s^-1]
+VolHeat_rural,700000.0, # Volumetric heat capacity of soil [J m^-3 K^-1]
+ThermalCond_rural,1.0,  # Thermal conductivity of soil [W m^-2 K^-1]
+
+# =================================================
+# Radiative Properties
+# =================================================
+albv_u,0.5,             # Foliage scattering coefficient
+eps_wall,0.95,          # Wall emissivity
+eps_road,0.95,          # Road emissivity
+eps_roof,0.95,          # Roof emissivity
+eps_veg,0.95,           # Emissivity of leaves surface
+eps_rural,0.95,         # Rural emissivity of Photovoltaic/Thermal Collector
+eps_bare,0.95,          # Bare ground emissivity
+alb_wall,0.4,           # Wall albedo
+alb_road,0.1,           # Road albedo
+alb_roof,0.22,          # Roof albedo
+alb_veg,0.20,           # vegetation (trees) albedo
+alb_rural,0.2,          # Rural albedo
+alb_bare,0.15,          # Bare ground albedo
+Ncloud,0,               # Fraction of sky covered by cloud
+
+# =================================================
+# Vegetation Parameters
+# =================================================
+BowenRatio_tree,0.9,    # Bowen ratio for trees
+radius_tree,1.5,        # Radius of tree crown [m]
+distance_tree,2.2,      # Distance between trees [m]
+trees,1,                # 1 for trees and 0 for no trees
+ftree,1,                # 1 for trees and 0 for no trees
+soilCover,0,            # Fraction of natural ground in the urban area which is covered by bare soil
+HighVegCover,0.1,       # High-vegetation cover fraction
+leaf_width,0.05,        # Leaf width [m]
+omega,1,                # Total neighbourhood foliage clumping [non dimensional]
+omega_drag,1,           # Effect of the foliage on the building drag coefficient
+vegCover,0.5,           # Fraction of the urban ground covered in grass/shrubs only (0-1)
+vegStart,4,             # The month in which vegetation starts to evapotranspire (leaves are out)
+vegEnd,10,              # The month in which vegetation stops evapotranspiring (leaves fall)
+latGrss,0.4,            # Fraction of the heat absorbed by grass that is latent (goes to evaporating water)
+latTree,0.6,            # Fraction of the heat absorbed by trees that is latent (goes to evaporating water)
+rurVegCover,0.9,        # Fraction of the rural ground covered by vegetation
+h_tk,2,                 # Height of trunk [m]
+LAI,0.6,                # Leaf area index for trees only (LAI) [m^2 m^-2] = Integral of LAD.dz.
+LAD,                    # Leaf area density profile, 1st heights [m], then LAD [m^2 m^-3] at each height
+0,2,3,4,
+0,0.2,0.2,0.2,
+
+# =================================================
+# SIMULATION CONTROL,
+# =================================================
+# Simulation parameters,
+Month,1,           # starting month J-F-M-A-M-J-J-A-S-O-N-D: 1-1-2-3-4-5-6-7-8-9-10-11
+Day,1,             # starting day (1-31) J-F-M-A-M-J-J-A-S-O-N-D: 1-29-26-29-28-29-28-29-29-28-29-28
+nDay,31,           # number of days to run simulation J-F-M-A-M-J-J-A-S-O-N-D: 31-31-34-33-34-33-34-34-33-34-33-34
+dtSim,60,          # simulation time step [s]
+dtWeather,3600,    # weather time step [s]
+nightStartHour,17, # Starting hour for the night [Local Solar Time] J-F-M-A-M-J-J-A-S-O-N-D: 17-18-18-19-20-20-20-19-18-18-17-17
+nightEndHour,8,    # Ending hour for the night [Local Solar Time] J-F-M-A-M-J-J-A-S-O-N-D: 8-7-6-6-5-5-5-5-6-7-7-8
+
+# =================================================
+# Other parameters
+# =================================================
+c_exch,1,       # exchange coefficient (default = 1; (Bueno 2014))
+windMin,0.5,    # minimum wind speed in the urban area [m s^-1]
