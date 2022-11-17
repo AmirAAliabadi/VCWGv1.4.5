@@ -718,7 +718,7 @@ class UWG(object):
         k = 0
         r_glaze = 0             # Glazing ratio for total building stock
         SHGC = 0                # SHGC addition for total building stock
-        h_floor = 8             # average floor height
+        h_floor = 3.05          # average floor height [m]
 
         # total building floor area
         total_urban_bld_area = math.pow(self.charLength,2)*self.bldDensity*self.bldHeight/h_floor
