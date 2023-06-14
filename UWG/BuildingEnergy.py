@@ -191,7 +191,7 @@ class Building(object):
         volVent = self.vent * self.nFloor               # total ventilation volumetric flow rate per building footprint area [m^3 s^-1 m^-2]
         volInfil = self.infil * UCM.bldHeight / 3600.   # total infiltration volumetric flow rate per building footprint area [m^3 s^-1 m^-2]
         T_wall = BEM.wall.layerTemp[-1]                 # Inner layer
-        massFlorRateSWH = BEM.SWH * self.nFloor/3600.   # Solar water heating per building footprint area per hour [kg s^-1 m^-2] (Change of units [hr^-1] to [s^-1]
+        massFlowRateSWH = BEM.SWH * self.nFloor/3600.   # Solar water heating per building footprint area per hour [kg s^-1 m^-2] (Change of units [hr^-1] to [s^-1]
         T_ceil = BEM.roof.layerTemp[-1]                 # Inner layer
         T_mass = BEM.mass.layerTemp[0]                  # Outer layer
         T_indoor = self.indoorTemp                      # Indoor temp (initial)
@@ -563,13 +563,13 @@ class Building(object):
         T_hot = 49 + 273.15     # Service water temp (assume no storage) [K]
 
         # Sensible hot water heating demand
-        self.sensWaterHeatDemand = massFlorRateSWH * CpH20 * (T_hot - forc.waterTemp)
+        self.sensWaterHeatDemand = massFlowRateSWH * CpH20 * (T_hot - forc.waterTemp)
 
         # The renewable energy case
         if (Adv_ene_heat_mode == 0) or (Adv_ene_heat_mode == 1):
             if self.sensWaterHeatDemand > 0:
                 if self.T_bites > forc.waterTemp:
-                    self.Q_waterSaved = massFlorRateSWH * CpH20 * (self.T_bites - forc.waterTemp)
+                    self.Q_waterSaved = massFlowRateSWH * CpH20 * (self.T_bites - forc.waterTemp)
                     self.Q_waterSaved = min(self.sensWaterHeatDemand, self.Q_waterSaved)
                     self.sensWaterHeatDemand = self.sensWaterHeatDemand - self.Q_waterSaved
 
@@ -623,7 +623,7 @@ class Building(object):
         if (Adv_ene_heat_mode == 0) or (Adv_ene_heat_mode == 1):
             # Heat recovery from domestic water under heating mode, assuming water is 20C lower than T_hot
             if (self.T_bites < T_hot - 20) and (Adv_ene_heat_mode == 1):
-                self.Q_waterRecovery = massFlorRateSWH * CpH20 * (T_hot - 20 - self.T_bites)
+                self.Q_waterRecovery = massFlowRateSWH * CpH20 * (T_hot - 20 - self.T_bites)
 
                 # Check if PCM can be utilized
                 if (self.T_bites >= T_melt) and (self.f_pcm < 1):
@@ -689,4 +689,4 @@ class Building(object):
         self.sensWaste = self.sensWasteCoolHeatDehum + self.QWater + self.QGas
         # Calculate total gas consumption per unit floor area [W m^-2] which is equal to gas consumption per unit floor area +
         # energy consumption for domestic hot water per unit floor area + energy consumption of the heating system per unit floor area
-        self.GasTotal = BEM.Gas + (massFlorRateSWH*CpH20*(T_hot - forc.waterTemp)/self.nFloor)/self.heatEff + self.heatConsump/self.nFloor
+        self.GasTotal = BEM.Gas + (massFlowRateSWH*CpH20*(T_hot - forc.waterTemp)/self.nFloor)/self.heatEff + self.heatConsump/self.nFloor
