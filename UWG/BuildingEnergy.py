@@ -359,15 +359,6 @@ class Building(object):
             volVent*dens*parameter.cp*(T_can-T_cool) +          # ventilation load per unit building footprint area [W m^-2]
             winTrans,                                           # solar load through window per unit building footprint area [W m^-2]
             0.)
-        # Name each term for post processing - Delete these after trouble shooting
-
-        self.QWall = wallArea*zac_in_wall*(T_wall - T_cool)
-        self.QMass = massArea*zac_in_mass*(T_mass - T_cool)
-        self.QWindow = winArea*self.uValue*(T_can-T_cool)
-        self.QCeil = ceilingArea*zac_in_ceil *(T_ceil-T_cool)
-        self.QInfil = volInfil*dens*parameter.cp*(T_can-T_cool)
-        self.QVen = volVent*dens*parameter.cp*(T_can-T_cool)
-        self.QWindowSolar = winTrans
 
         self.sensHeatDemand = max(
             -(wallArea*zac_in_wall*(T_wall-T_heat) +            # wall load per unit building footprint area [W m^-2]
