@@ -54,7 +54,9 @@ class Forcing (object):
             self.dir = weather.staDir
             self.dif = weather.staDif
             self.prec = [p/3.6e6 for p in weather.staRobs]
+            # Maximum wind speed permitted is 5 [m s-1]; overwrite values higher than 5 with 5
             self.wind = weather.staUmod
+            self.wind = [min(x, 5) for x in self.wind]
 
     def __repr__(self):
         return "Forcing: deepT={a}, waterT={b}".format(
