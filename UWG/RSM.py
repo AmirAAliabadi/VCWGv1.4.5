@@ -84,12 +84,12 @@ class RSMDef(object):
                                      0.5 * self.dz) ** (1. / (self.parameter.r / self.parameter.cp))
 
         # Calculate the real temperature profile [K]
-        for iz in xrange(self.nz):
+        for iz in range(self.nz):
             self.tempRealProf[iz] = self.T_rural[iz] * \
                                     (self.presProf[iz] / self.forc.pres) ** (self.parameter.r / self.parameter.cp)
 
         # Calculate the density profile [kg m^-3]
-        for iz in xrange(self.nz):
+        for iz in range(self.nz):
             self.densityProfC[iz] = self.presProf[iz] / self.parameter.r / self.tempRealProf[iz]
 
         # Temperature at the lower bound of integral

@@ -8,7 +8,7 @@ Last update: March 2012
 """
 
 from .Simparam import SimParam
-from .Weather import  Weather
+from .Weather import Weather
 from .BuildingEnergy import Building
 from .Material import Material
 from .Element import Element
@@ -22,8 +22,8 @@ from .RSM import RSMDef
 from .ReadDOE import readDOE
 from .UrbFlux import urbflux
 
-from .UWG import UWG #from UWG.py import class UWG
-from UWG import procMat
+from .UWG import UWG
+from .UWG import procMat
 
 
 __all__ = [
@@ -42,4 +42,4 @@ __all__ = [
     "UrbFlux",
     "Weather",
     "RSM",
-    ]
+]

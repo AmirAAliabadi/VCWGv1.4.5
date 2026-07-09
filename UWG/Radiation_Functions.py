@@ -697,12 +697,15 @@ class RadiationFunctions(object):
                     0])
 
         # Incoming radiation [W m^-2]
-        A_i1	=	numpy.dot(Tij2,B_i)+SWRdir_i
-        # Incoming radiation [W m^-2]
-        A_i			=	B_i/ai
-        for i in range(0,len(ai)):
+        A_i1 = numpy.dot(Tij2, B_i) + SWRdir_i
+                                     
+        A_i = numpy.zeros_like(B_i)  # Initialize empty array of the right size
+        
+        for i in range(len(ai)):
             if ai[i] == 0:
                 A_i[i] = A_i1[i]
+            else:
+                A_i[i] = B_i[i] / ai[i]
         # Assumption: The sky has a fixed emission of LWR. Hence, Qnet is 0.
         A_i[5]		=	0
         # Absorbed shortwave radiation at ech surface Qnet_i
@@ -928,11 +931,14 @@ class RadiationFunctions(object):
 
         # Incoming radiation [W m^-2]
         A_i1 = numpy.dot(Tij2, B_i) + SWRdir_i
-        # Incoming radiation [W m^-2]
-        A_i = B_i / ai
-        for i in range(0, len(ai)):
+                                     
+        A_i = numpy.zeros_like(B_i)
+        
+        for i in range(len(ai)):
             if ai[i] == 0:
                 A_i[i] = A_i1[i]
+            else:
+                A_i[i] = B_i[i] / ai[i]
         A_i[6] = 0  # Assumption: The sky has a fixed emission of LWR. Hence, Qnet is 0.
         # Absorbed shortwave radiation at ech surface Qnet_i
         Qnet_i = A_i - B_i
@@ -1087,7 +1093,7 @@ class RadiationFunctions(object):
         else:
             X_Shadow, X_Tree, n_Shadow, n_Tree = self.ShadowLengthWithTrees(h_can, w_can, d_tree, h_tree, r_tree, theta_Z, theta_n)
 
-        Xsi = math.tan(theta_Z) * abs(math.sin(theta_n)) ### check later
+        Xsi = math.tan(theta_Z) * abs(math.sin(theta_n)) 
 
         SWRdir_g = SWR_dir * (1 - X_Shadow + tau * X_Tree)
         SWRdir_wsun = SWR_dir * Xsi * (1 - n_Shadow + tau * n_Tree)

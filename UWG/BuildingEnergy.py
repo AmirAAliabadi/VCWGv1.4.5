@@ -1,5 +1,5 @@
 
-from Psychrometrics import psychrometrics, moist_air_density
+from .Psychrometrics import psychrometrics, moist_air_density
 import logging
 import numpy
 import math

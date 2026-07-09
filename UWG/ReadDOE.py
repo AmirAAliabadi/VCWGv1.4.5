@@ -1,14 +1,14 @@
 import sys
 import os
-import cPickle
+import pickle
 
-from BuildingEnergy import Building
-from Material import Material
-from Element import Element
-from BEMDef import BEMDef
-from schdef import SchDef
-from Utilities import read_csv, str2fl
-import Utilities
+from .BuildingEnergy import Building
+from .Material import Material
+from .Element import Element
+from .BEMDef import BEMDef
+from .schdef import SchDef
+from .Utilities import read_csv, str2fl
+from . import Utilities
 
 """
 Developed by Bruno Bueno
@@ -106,15 +106,15 @@ def readDOE(serialize_output=True):
     NClimateZones = 17
     NBuildingTypes = 16
 
-    #Nested, nested lists of Building, SchDef, BEMDef objects
-    refDOE = map(lambda j_: map (lambda k_: [None]*NClimateZones,[None]*3), [None]*NBuildingTypes)     #refDOE(NClimateZones,3,NBuildingTypes) = Building;
-    Schedule = map(lambda j_: map (lambda k_: [None]*NClimateZones,[None]*3), [None]*NBuildingTypes)   #Schedule (NClimateZones,3,NBuildingTypes) = SchDef;
-    refBEM = map(lambda j_: map (lambda k_: [None]*NClimateZones,[None]*3), [None]*NBuildingTypes)     #refBEM (NClimateZones,3,NBuildingTypes) = BEMDef;
+    # Nested lists of Building, SchDef, BEMDef objects
+    refDOE = [[[None for _ in range(NClimateZones)] for _ in range(3)] for _ in range(NBuildingTypes)]
+    Schedule = [[[None for _ in range(NClimateZones)] for _ in range(3)] for _ in range(NBuildingTypes)]
+    refBEM = [[[None for _ in range(NClimateZones)] for _ in range(3)] for _ in range(NBuildingTypes)]     #refBEM (NClimateZones,3,NBuildingTypes) = BEMDef;
 
     #Purpose: Loop through every DOE reference csv and extract building data
     #Nested loop = NBuildingTypes types, 3 era, NClimateZones zones
 
-    for i in xrange(NBuildingTypes):
+    for i in range(NBuildingTypes):
 
         # Read building summary (Sheet 1)
         file_doe_name_bld = os.path.join("{}".format(DIR_DOE_PATH), "BLD{}".format(i+1),"BLD{}_BuildingSummary.csv".format(i+1))
@@ -172,9 +172,9 @@ def readDOE(serialize_output=True):
         SchSWH      = str2fl([list_doe4[19][6:30],list_doe4[20][6:30],list_doe4[21][6:30]])   # Solar Water Heating Schedule 24 hrs; wkday=summerdesign, sat=winterdesgin
 
 
-        for j in xrange(3):
+        for j in range(3):
 
-            for k in xrange(NClimateZones):
+            for k in range(NClimateZones):
 
                 B = Building(
                     hCeiling[j],                        # floorHeight by area
@@ -434,9 +434,9 @@ def readDOE(serialize_output=True):
 
         # dump in ../resources
         # Pickle objects, protocol 1 b/c binary file
-        cPickle.dump(refDOE, pickle_readDOE,1)
-        cPickle.dump(refBEM, pickle_readDOE,1)
-        cPickle.dump(Schedule, pickle_readDOE,1)
+        pickle.dump(refDOE, pickle_readDOE,1)
+        pickle.dump(refBEM, pickle_readDOE,1)
+        pickle.dump(Schedule, pickle_readDOE,1)
 
         pickle_readDOE.close()
 

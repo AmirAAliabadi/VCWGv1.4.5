@@ -1,6 +1,6 @@
-from Utilities import read_csv, str2fl
+from .Utilities import read_csv, str2fl
 from math import pow, log, exp
-from Psychrometrics import HumFromRHumTemp
+from .Psychrometrics import HumFromRHumTemp
 
 """
 Developed by Bruno Bueno
@@ -38,31 +38,32 @@ class Weather(object):
         try:
             self.climate_data = read_csv(climate_file)
         except Exception as e:
-            raise Exception("Failed to read .epw file! {}".format(e.message))
+            raise Exception("Failed to read .epw file! {}".format(str(e)))
 
         self.location = self.climate_data[0][1]
         cd = self.climate_data[HI:HF+1]
-        self.staTemp = str2fl([cd[i][6] for i in xrange(len(cd))])           # drybulb [C]
-        self.staTdp = str2fl([cd[i][7] for i in xrange(len(cd))])            # dewpoint [C]
-        self.staRhum = str2fl([cd[i][8] for i in xrange(len(cd))])           # air relative humidity [%]
-        self.staPres = str2fl([cd[i][9] for i in xrange(len(cd))])           # air pressure [Pa]
-        self.staInfra = str2fl([cd[i][12] for i in xrange(len(cd))])         # horizontal Infrared Radiation Intensity [W m^-2]
-        self.staHor = str2fl([cd[i][13] for i in xrange(len(cd))])           # horizontal radiation [W m^-2]
-        self.staDir = str2fl([cd[i][14] for i in xrange(len(cd))])           # normal solar direct radiation [W m^-2]
-        self.staDif = str2fl([cd[i][15] for i in xrange(len(cd))])           # horizontal solar diffuse radiation [W m^-2]
-        self.staUdir = str2fl([cd[i][20] for i in xrange(len(cd))])          # wind direction [deg]
-        self.staUmod = str2fl([cd[i][21] for i in xrange(len(cd))])          # wind speed [m s^-1]
-        self.staRobs = str2fl([cd[i][33] for i in xrange(len(cd))])          # Precipitation [mm h^-1]
-        self.staHum = [0.0] * len(self.staTemp)                              # specific humidity [kg kg^-1]
 
-        for i in xrange(len(self.staTemp)):
+        self.staTemp = str2fl([cd[i][6] for i in range(len(cd))])           # drybulb [C]
+        self.staTdp = str2fl([cd[i][7] for i in range(len(cd))])            # dewpoint [C]
+        self.staRhum = str2fl([cd[i][8] for i in range(len(cd))])           # air relative humidity [%]
+        self.staPres = str2fl([cd[i][9] for i in range(len(cd))])           # air pressure [Pa]
+        self.staInfra = str2fl([cd[i][12] for i in range(len(cd))])         # horizontal Infrared Radiation Intensity [W m^-2]
+        self.staHor = str2fl([cd[i][13] for i in range(len(cd))])           # horizontal radiation [W m^-2]
+        self.staDir = str2fl([cd[i][14] for i in range(len(cd))])           # normal solar direct radiation [W m^-2]
+        self.staDif = str2fl([cd[i][15] for i in range(len(cd))])           # horizontal solar diffuse radiation [W m^-2]
+        self.staUdir = str2fl([cd[i][20] for i in range(len(cd))])          # wind direction [deg]
+        self.staUmod = str2fl([cd[i][21] for i in range(len(cd))])          # wind speed [m s^-1]
+        self.staRobs = str2fl([cd[i][33] for i in range(len(cd))])          # Precipitation [mm h^-1]
+        self.staHum = [0.0] * len(self.staTemp)                             # specific humidity [kg kg^-1]
+
+        for i in range(len(self.staTemp)):
             self.staHum[i] = HumFromRHumTemp(self.staRhum[i], self.staTemp[i], self.staPres[i])
 
-        self.staTemp = [s+273.15 for s in self.staTemp]                      # air temperature [K]
+        self.staTemp = [s+273.15 for s in self.staTemp]                     # air temperature [K]
 
     def __repr__(self):
         return "Weather: {a}, HI Tdb:{b}, HF Tdb:{c}".format(
             a=self.location,
             b=self.staTemp[0]-273.15,
             c=self.staTemp[-1]-273.15
-            )
+        )

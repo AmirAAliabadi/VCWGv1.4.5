@@ -44,13 +44,12 @@ class Element(object):
         if len(thicknessLst) != len(materialLst):
             raise Exception(self.THICKNESSLST_EQ_MATERIALLST_MSG)
         else:
-            self._name = name                                       # purely for internal process
-            self.layerThickness = thicknessLst                      # vector of layer thicknesses [m]
-            self.layerThermalCond = map(lambda z: 0, materialLst)   # vector of layer thermal conductivity [W m^-1 K^-1]
-            self.layerVolHeat = map(lambda z: 0, materialLst)       # vector of layer volumetric heat capacity [J m^-3 K^-1]
-
+            self._name = name                                            # purely for internal process
+            self.layerThickness = thicknessLst                           # vector of layer thicknesses [m]
+            self.layerThermalCond = list(map(lambda z: 0, materialLst))  # vector of layer thermal conductivity [W m^-1 K^-1]
+            self.layerVolHeat = list(map(lambda z: 0, materialLst))      # vector of layer volumetric heat capacity [J m^-3 K^-1]
             # Create list of layer k and (Cp*density) from materialLst properties
-            for i in xrange(len(materialLst)):
+            for i in range(len(materialLst)):
               self.layerThermalCond[i] = materialLst[i].thermalCond
               self.layerVolHeat[i] = materialLst[i].volHeat
 
@@ -189,18 +188,18 @@ class Element(object):
         num = len(t)                # number of layers
 
         # Mean thermal conductivity over distance between 2 layers [W m^-1 K^-1]
-        tcp = [0 for x in xrange(num)]
+        tcp = [0 for x in range(num)]
         # Thermal capacity times layer depth [J m^-2 K^-1]
-        hcp = [0 for x in xrange(num)]
+        hcp = [0 for x in range(num)]
         # lower, main, and upper diagonals
-        za = [[0 for y in xrange(3)] for x in xrange(num)]
+        za = [[0 for y in range(3)] for x in range(num)]
         # RHS
-        zy = [0 for x in xrange(num)]
+        zy = [0 for x in range(num)]
 
         #--------------------------------------------------------------------------
         # Define the column vectors for heat capacity and conductivity
         hcp[0] = hc[0] * d[0]
-        for j in xrange(1,num):
+        for j in range(1,num):
             tcp[j] = 2. / (d[j-1] / tc[j-1] + d[j] / tc[j])
             hcp[j] = hc[j] * d[j]
 
@@ -213,7 +212,7 @@ class Element(object):
 
         #--------------------------------------------------------------------------
         # Define other rows
-        for j in xrange(1,num-1):
+        for j in range(1,num-1):
           za[j][0] = fimp*(-tcp[j])
           za[j][1] = hcp[j]/dt + fimp*(tcp[j]+tcp[j+1])
           za[j][2] = fimp*(-tcp[j+1])
@@ -254,11 +253,11 @@ class Element(object):
         betaw = (parameter.lvtt/parameter.rv) + (gamw * parameter.tt)
         alpw = math.log(parameter.estt) + (betaw /parameter.tt) + (gamw * math.log(parameter.tt))
         work2 = parameter.r/parameter.rv
-        foes_lst = [0 for i in xrange(len(temp))]
-        work1_lst = [0 for i in xrange(len(temp))]
-        qsat_lst = [0 for i in xrange(len(temp))]
+        foes_lst = [0 for i in range(len(temp))]
+        work1_lst = [0 for i in range(len(temp))]
+        qsat_lst = [0 for i in range(len(temp))]
 
-        for i in xrange(len(temp)):
+        for i in range(len(temp)):
           # saturation vapor pressure
           foes_lst[i] = math.exp( alpw - betaw/temp[i] - gamw*math.log(temp[i]))
           work1_lst[i] = foes_lst[i]/pres[i]
@@ -281,16 +280,16 @@ class Element(object):
     """
 
     def invert(self,nz,A,C):
-        X = [0 for i in xrange(nz)]
+        X = [0 for i in range(nz)]
 
-        for i in reversed(xrange(nz-1)):
+        for i in reversed(range(nz-1)):
             C[i] = C[i] - A[i][2] * C[i+1]/A[i+1][1]
             A[i][1] = A[i][1] - A[i][2] * A[i+1][0]/A[i+1][1]
 
-        for i in  xrange(1,nz,1):
+        for i in  range(1,nz,1):
             C[i] = C[i] - A[i][0] * C[i-1]/A[i-1][1]
 
-        for i in xrange(nz):
+        for i in range(nz):
             X[i] = C[i]/A[i][1]
 
         return X

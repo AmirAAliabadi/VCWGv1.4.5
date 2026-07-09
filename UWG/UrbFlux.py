@@ -1,6 +1,6 @@
 from math import log
 import numpy
-from Radiation_Functions import RadiationFunctions
+from .Radiation_Functions import RadiationFunctions
 
 """
 Calculate the surface heat fluxes in the urban area
@@ -20,7 +20,7 @@ def urbflux(UCM,BEM, forc, parameter, simTime, RSM,WindUrban, bx, by,
     UCM.roofTemp = 0.       # Average urban roof temperature [K]
     UCM.wallTemp = 0.       # Average urban wall temperature [K]
 
-    for j in xrange(len(BEM)):
+    for j in range(len(BEM)):
         # Building energy model
         BEM[j].building.BEMCalc(UCM, BEM[j], forc, parameter, simTime, bx, by,
             beta_st, A_st, U_st, FR_st, tau_alpha_e_st, eta_he_st, V_bites, c_bites, m_dot_st_f,

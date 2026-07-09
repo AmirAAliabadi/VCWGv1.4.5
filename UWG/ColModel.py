@@ -2,13 +2,13 @@ import numpy
 import math
 import matplotlib.pyplot as plt
 
-from BuildingColumnModel import BuildingCol
-from DragTurb import CdTurb
-#from cdturbWF import CdTurbWF
-from Shear import Shear
-from Buoyancy import Buoyancy
-from NumericalSolver import Diff
-from Invert import Invert
+from .BuildingColumnModel import BuildingCol
+from .DragTurb import CdTurb
+#from. cdturbWF import CdTurbWF
+from .Shear import Shear
+from .Buoyancy import Buoyancy
+from .NumericalSolver import Diff
+from .Invert import Invert
 
 """
 Column Model for momentum, turbulent kinetic energy, temperature, and specific humidity in the urban environment
@@ -118,7 +118,7 @@ class ColModel:
         kappa = 0.4
         # To calculate u_star for a wall function we are using u_star from rural model, which needs to be reduced near the urban surfaces
         u_star_multiplier_wall = 0.15
-        Utot_nearGround = (u_star_multiplier_wall*self.u_star/kappa) * math.log((self.dz/2.)/(z0_road))
+        Utot_nearGround = (u_star_multiplier_wall*self.u_star/kappa)*math.log((self.dz/2.)/(z0_road))
         self.vx[0] = Utot_nearGround*math.cos(math.radians(theta_S))
         self.vy[0] = Utot_nearGround*math.sin(math.radians(theta_S))
         self.tke[0] = ((u_star_multiplier_wall*self.u_star)**2)/numpy.sqrt(Cmu[0])
@@ -208,7 +208,7 @@ class ColModel:
             s = desdT / pr
             # Calculate terms in transport equations caused by trees. "wt" is term in temperature equation and "wt_drag"
             # is term in TKE and momentum equations. It is assumed there is no vegetation above average building height
-            if self.dz * i + self.dz/2. > max(self.h_LAD):
+            if self.dz * i+self.dz/2. > max(self.h_LAD):
                 wt = 0         # [m^2 m^-3]
                 wt_drag = 0    # [m^2 m^-3]
             else:

@@ -1,4 +1,7 @@
-from RayTracing import RayTracingCal
+try:
+    from .RayTracing import RayTracingCal   # when run as part of the UWG package
+except ImportError:
+    from RayTracing import RayTracingCal    # when run directly/standalone
 import numpy
 import time
 import math
